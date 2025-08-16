@@ -1,11 +1,7 @@
-import React from 'react';
+import { redirect } from 'next/navigation';
 
 const page = () => {
-    return (
-        <div>
-            <h1 className='text-5xl'>Домашняя</h1>
-        </div>
-    );
+    redirect('/cars');
 };
 
 export default page;
