@@ -1,12 +1,11 @@
 import React from 'react';
-import { createClient } from '@/utils/supabase/server';
+import { supabase } from '@/utils/supabase/supabaseClient';
 import { Database } from '@/utils/supabase/types/supabase';
 import Image from 'next/image';
 
 export type Car = Database["public"]["Tables"]["cars"]["Row"];
 
 const page = async () => {
-    const supabase = await createClient();
     const { data: cars } = await supabase
         .from("cars")
         .select("*")

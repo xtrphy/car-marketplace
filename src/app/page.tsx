@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-const page = () => {
+const page = async () => {
     redirect('/cars');
 };
 
