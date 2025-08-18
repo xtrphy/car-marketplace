@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { Car } from '@/app/(main)/[category]/page';
 import NotFound from '../components/NotFound';
 import CarCard from '../components/Car';
@@ -18,7 +17,7 @@ const Cars = ({ carsArr }: { carsArr: Car[] }) => {
                 )}
             </div>
 
-            <div className='flex gap-5'>
+            <div className='flex flex-col gap-5'>
                 {cars.length > 0 && cars.map(car => (
                     <CarCard car={car} key={car.id} />
                 ))}
