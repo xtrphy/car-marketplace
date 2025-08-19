@@ -1,6 +1,7 @@
 import { Car } from '@/app/(main)/[category]/page';
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { IoCameraOutline } from 'react-icons/io5';
 import { LuMapPin } from 'react-icons/lu';
 import numeral from '@/utils/numeral/register';
@@ -37,7 +38,8 @@ const CarCard = ({ car }: { car: Car }) => {
     const formattedPrice = numeral(car.price).format("0,0 $");
 
     return (
-        <div
+        <Link
+        href={`/cars/${car.id}`}
             className='flex justify-start rounded-md border hover:bg-[#f0f0f0] transition-colors duration-200'
             onMouseLeave={onLeave}
         >
@@ -102,7 +104,7 @@ const CarCard = ({ car }: { car: Car }) => {
                 </div>
 
             </div>
-        </div>
+        </Link>
     );
 };
 
