@@ -2,6 +2,8 @@ import { Car } from '@/app/(main)/[category]/page';
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { IoCameraOutline } from 'react-icons/io5';
+import { LuMapPin } from 'react-icons/lu';
+import numeral from '@/utils/numeral/register';
 
 const CarCard = ({ car }: { car: Car }) => {
     const [activeImage, setActiveImage] = useState(0);
@@ -32,12 +34,14 @@ const CarCard = ({ car }: { car: Car }) => {
         setIsBars(false);
     }
 
+    const formattedPrice = numeral(car.price).format("0,0 $");
+
     return (
         <div
-            className='flex rounded-md border hover:bg-[#f0f0f0] transition-colors duration-200'
+            className='flex justify-start rounded-md border hover:bg-[#f0f0f0] transition-colors duration-200'
             onMouseLeave={onLeave}
         >
-            <div className='relative'>
+            <div className='w-[200px] relative'>
                 {isBars && (
                     <div className='absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/70 to-transparent pointer-events-none rounded-bl-md' />
                 )}
@@ -75,11 +79,28 @@ const CarCard = ({ car }: { car: Car }) => {
                     className='rounded-tl-md rounded-bl-md w-[200px] h-[160px] object-cover'
                 />
             </div>
-            <div className='flex flex-col p-3'>
-                <span className='font-medium mb-1'>{car.price} ₸</span>
-                <span className='text-primary-accent text-base hover:text-[#f33] cursor-pointer'>{car.title}</span>
-                <span className='text-[13px] mt-1'>{car.engine_size}, {car.gearbox}</span>
-                <span className='mt-5 text-[13px] text-[#777]'>{car.city}</span>
+            <div className='w-[905px] flex flex-col p-3'>
+
+                <div className='flex justify-between'>
+                    <span className='text-primary-accent text-lg hover:text-[#f33] cursor-pointer'>
+                        {car.title}
+                    </span>
+                    <span className='font-medium'>
+                        {formattedPrice}
+                    </span>
+                </div>
+
+                <div className='flex flex-col text-[13px]'>
+                    <span>{car.mileage}</span>
+                    <span>
+                        {car.engine_size}, {car.gearbox}
+                    </span>
+                    <span className='flex items-center gap-1 mt-12 text-[#777]'>
+                        <LuMapPin />
+                        {car.city}
+                    </span>
+                </div>
+
             </div>
         </div>
     );
