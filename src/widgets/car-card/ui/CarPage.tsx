@@ -6,7 +6,6 @@ import Image from 'next/image';
 import numeral from "@/utils/numeral/register";
 
 const CarPage = ({ car }: { car: Car }) => {
-    console.log(car);
     const [activeImage, setActiveImage] = useState(0);
 
     const details = [

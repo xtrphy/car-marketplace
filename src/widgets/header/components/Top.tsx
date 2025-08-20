@@ -23,7 +23,7 @@ const Top = () => {
 
     const redirectToNew = () => {
         if (!user) {
-            return;
+            router.push('/login');
         } else {
             router.push('/cabinet/new');
         }
