@@ -163,6 +163,7 @@ const NewAdv = () => {
                             type="text"
                             placeholder='Toyota'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
@@ -174,6 +175,7 @@ const NewAdv = () => {
                             type="text"
                             placeholder='Camry'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
@@ -185,6 +187,7 @@ const NewAdv = () => {
                             type="text"
                             placeholder='2025'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
@@ -196,6 +199,7 @@ const NewAdv = () => {
                             type="text"
                             placeholder='Седан'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
@@ -207,6 +211,7 @@ const NewAdv = () => {
                             type="text"
                             placeholder='Автомат'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
@@ -218,6 +223,7 @@ const NewAdv = () => {
                             type="text"
                             placeholder='2'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
@@ -229,6 +235,7 @@ const NewAdv = () => {
                             type="text"
                             placeholder='10000'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
@@ -240,6 +247,7 @@ const NewAdv = () => {
                             type="text"
                             placeholder='Белый'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
@@ -251,6 +259,7 @@ const NewAdv = () => {
                             type="number"
                             placeholder='3500000 тг'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
@@ -262,6 +271,7 @@ const NewAdv = () => {
                             type="text"
                             placeholder='Астана'
                             className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                            required
                         />
                     </label>
 
