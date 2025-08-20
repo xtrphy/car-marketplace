@@ -15,7 +15,9 @@ export default function RootLayout({
             <main className="px-4 flex-grow mx-96">
                 <div className="flex">
                     <Aside />
-                    {children}
+                    <div className="p-4">
+                        {children}
+                    </div>
                 </div>
             </main>
             <Footer />

@@ -2,8 +2,8 @@ import React from 'react';
 
 const page = () => {
     return (
-        <div className='p-4 ml-[40px]'>
-            Настройки
+        <div>
+            <span className='text-xl font-medium'>Настройки</span>
         </div>
     );
 };

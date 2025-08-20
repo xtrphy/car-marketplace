@@ -4,6 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import { RxDashboard } from 'react-icons/rx';
 import { IoSettingsOutline } from 'react-icons/io5';
+import { FaCirclePlus } from 'react-icons/fa6';
 import { usePathname } from 'next/navigation';
 
 const Aside = () => {
@@ -16,6 +17,11 @@ const Aside = () => {
             icon: <RxDashboard size={20} />
         },
         {
+            label: "Новое объявление",
+            href: "/cabinet/new",
+            icon: <FaCirclePlus size={20} />
+        },
+        {
             label: "Настройки",
             href: "/cabinet/settings",
             icon: <IoSettingsOutline size={20} />
@@ -23,7 +29,7 @@ const Aside = () => {
     ]
 
     return (
-        <div className='p-4'>
+        <div className='p-4 w-[250px]'>
             <ul className='flex flex-col gap-3'>
                 {tabs.map(({ label, href, icon }, i) => (
                     <li key={i}>

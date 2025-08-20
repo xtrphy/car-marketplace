@@ -6,6 +6,7 @@ import Image from 'next/image';
 import numeral from "@/utils/numeral/register";
 
 const CarPage = ({ car }: { car: Car }) => {
+    console.log(car);
     const [activeImage, setActiveImage] = useState(0);
 
     const details = [
@@ -15,7 +16,7 @@ const CarPage = ({ car }: { car: Car }) => {
         { label: "Объем двигателя, л", value: car.engine_size },
         { label: "Коробка", value: car.gearbox },
         { label: "Привод", value: car.drive },
-        { label: "Руль", value: car.steering_wheel },
+        { label: "Руль", value: car.steering_wheel ? "Справа" : "Слева" },
         { label: "Цвет", value: car.color },
         { label: "Растаможен в Казахстане", value: car.customs ? "Да" : "Нет" },
     ];
