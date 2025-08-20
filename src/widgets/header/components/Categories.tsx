@@ -44,10 +44,6 @@ const Categories = () => {
         setActiveCategory(categoryFromUrl);
     }, [categoryFromUrl]);
 
-    const handleCategoryClick = (category: string) => {
-        setActiveCategory(category);
-    }
-
     return (
         <div className='mx-96 px-4 my-6 flex gap-2'>
             <ul className='flex gap-3'>
@@ -57,7 +53,7 @@ const Categories = () => {
                         className={
                             clsx('rounded-lg hover:bg-secondary-hover transition-colors duration-200',
                                 { 'bg-secondary-hover': activeCategory === href.slice(1, href.length) })}
-                        onClick={() => handleCategoryClick(category)}
+                        onClick={() => setActiveCategory(category)}
                     >
                         <Link href={href} className='flex gap-2 items-center py-2 px-3'>
                             {icon}
