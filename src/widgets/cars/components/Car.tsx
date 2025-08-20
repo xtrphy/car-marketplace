@@ -39,7 +39,7 @@ const CarCard = ({ car }: { car: Car }) => {
 
     return (
         <Link
-        href={`/cars/${car.id}`}
+            href={`/cars/${car.id}`}
             className='flex justify-start rounded-md border hover:bg-[#f0f0f0] transition-colors duration-200'
             onMouseLeave={onLeave}
         >
@@ -74,7 +74,7 @@ const CarCard = ({ car }: { car: Car }) => {
                 }
 
                 <Image
-                    src={car.images ? car.images[activeImage] : "/placeholder.webp"}
+                    src={car.images && car.images.length > 0 ? car.images[activeImage] : '/placeholder.webp'}
                     alt={car.title}
                     width={200}
                     height={160}

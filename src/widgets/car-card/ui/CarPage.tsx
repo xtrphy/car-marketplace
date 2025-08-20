@@ -52,7 +52,7 @@ const CarPage = ({ car }: { car: Car }) => {
             <div className='flex flex-col ml-[50px]'>
                 <div className='w-[700px] h-[420px]'>
                     <Image
-                        src={car.images[activeImage]}
+                        src={car.images[activeImage] || '/placeholder.webp'}
                         alt={car.title}
                         width={750}
                         height={470}

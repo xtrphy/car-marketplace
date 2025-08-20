@@ -33,7 +33,7 @@ const Advertisement = ({ advertisement, onDelete }: { advertisement: Car, onDele
             </Link>
             <span className='mt-0.5 font-medium'>{formattedPrice}</span>
             <Image
-                src={advertisement.images[0]}
+                src={advertisement.images[0] || '/placeholder.webp'}
                 alt={advertisement.title}
                 width={160}
                 height={120}
