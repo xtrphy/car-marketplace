@@ -52,7 +52,7 @@ export type Database = {
                     engine_size: string | null
                     gearbox: string | null
                     generation: string | null
-                    id: number
+                    id: string
                     mileage: string | null
                     images: string[]
                     price: number | null
