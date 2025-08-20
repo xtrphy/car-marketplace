@@ -61,8 +61,6 @@ const NewAdv = () => {
             uploadedUrls = await uploadToCloudinary(images);
         }
 
-        console.log(uploadedUrls);
-
         const { data: { user } } = await supabase.auth.getUser();
 
         const { data, error } = await supabase

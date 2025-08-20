@@ -1,5 +1,4 @@
 export const uploadToCloudinary = async (files: File[]): Promise<string[]> => {
-    console.log('Файлы для cloudinary', files);
     const uploaders = files.map(async (file) => {
         const formData = new FormData();
         formData.append("file", file);
