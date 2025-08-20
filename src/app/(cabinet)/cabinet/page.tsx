@@ -37,7 +37,7 @@ const Cabinet = () => {
     }, [user?.id]);
 
     return (
-        <div className='p-4'>
+        <div>
             <span className='text-xl font-medium'>Ваши объявления на сайте</span>
             <div className='mt-3 flex gap-3'>
                 {advertisements.length > 0 ? advertisements.map(advertisement => (
