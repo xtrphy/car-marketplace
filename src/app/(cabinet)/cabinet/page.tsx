@@ -30,7 +30,7 @@ const Cabinet = () => {
                 .eq("profile_id", user.id);
 
             if (error) console.error(error);
-            setAdvertisements(data);
+            setAdvertisements(data ?? []);
         }
 
         getAdvertisements();
