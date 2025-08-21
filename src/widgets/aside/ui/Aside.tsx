@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import React from 'react';
 import { RxDashboard } from 'react-icons/rx';
-import { IoSettingsOutline } from 'react-icons/io5';
 import { FaCirclePlus } from 'react-icons/fa6';
 import { redirect, usePathname } from 'next/navigation';
 import { IoMdExit } from 'react-icons/io';
@@ -23,15 +22,10 @@ const Aside = () => {
             href: "/cabinet/new",
             icon: <FaCirclePlus size={20} />
         },
-        {
-            label: "Настройки",
-            href: "/cabinet/settings",
-            icon: <IoSettingsOutline size={20} />
-        }
     ];
 
     const handleExit = async () => {
-        const { error } = await supabase.auth.signOut()
+        await supabase.auth.signOut()
         redirect('/cars');
     };
 
