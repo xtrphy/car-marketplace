@@ -37,7 +37,7 @@ const Top = () => {
 
                     <div className='flex items-center gap-5'>
                         {user ? (
-                            <Link href='/cabinet'>Личный кабинет</Link>
+                            <Link href='/cabinet' className='bg-gray-100 hover:bg-gray-200 py-1.5 px-4 rounded-lg text-[15px] transition-colors duration-200'>Личный кабинет</Link>
                         ) : (
                             <Link href='/login' className='border border-[#505b713b] py-1.5 px-4 rounded-lg flex items-center gap-2 text-primary-accent text-[15px] hover:bg-secondary-hover cursor-pointer transition-colors duration-200'>
                                 <CiUser size={20} strokeWidth={1} />
