@@ -4,7 +4,6 @@ import Top from "@/widgets/header/components/Top";
 import Aside from "@/widgets/aside/ui/Aside";
 import AuthGuard from "@/widgets/AuthGuard";
 
-
 export default function RootLayout({
     children,
 }: Readonly<{
