@@ -1,13 +1,12 @@
 'use client';
 
 import { Car } from '@/app/(main)/[category]/page';
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React, { Suspense, lazy } from 'react';
 import numeral from "@/utils/numeral/register";
 
-const CarPage = ({ car }: { car: Car }) => {
-    const [activeImage, setActiveImage] = useState(0);
+const ImageGallery = lazy(() => import("@/components/ImageGallery"));
 
+const CarPage = ({ car }: { car: Car }) => {
     const details = [
         { label: "Город", value: car.city },
         { label: "Поколение", value: car.generation },
@@ -49,37 +48,11 @@ const CarPage = ({ car }: { car: Car }) => {
                 </div>
             </div>
             <div className='flex flex-col ml-[50px]'>
-                <div className='w-[700px] h-[420px]'>
-                    <Image
-                        src={car.images[activeImage] || '/placeholder.webp'}
-                        alt={car.title}
-                        width={750}
-                        height={470}
-                        className='rounded-lg w-full h-full object-cover'
-                    />
-                </div>
-
-                <ul className='flex gap-1.5 mt-4'>{car.images.map((image, i) => (
-                    <li key={i}>
-                        <button
-                            onClick={() => setActiveImage(i)}
-                            className={`${activeImage === i
-                                ? 'outline-2 outline-primary-accent'
-                                : 'outline-none'
-                                } hover:opacity-80 transition-opacity duration-200 cursor-pointer rounded-lg w-[90px] h-[70px]`}
-                        >
-                            <Image
-                                src={image}
-                                alt={car.title}
-                                width={90}
-                                height={70}
-                                className='rounded-md w-full h-full object-cover'
-                            />
-                        </button>
-                    </li>
-                ))}
-                </ul>
-
+                <Suspense fallback={
+                    <div className='w-[700px] h-[420px] bg-gray-200 animate-pulse rounded-lg' />
+                }>
+                    <ImageGallery images={car.images} title={car.title} />
+                </Suspense>
             </div>
         </div>
     );
