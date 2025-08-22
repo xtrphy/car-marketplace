@@ -5,6 +5,7 @@ import { Car } from '@/app/(main)/[category]/page';
 import NotFound from '../components/NotFound';
 import CarCard from '../components/Car';
 import FilterInput from '@/components/FilterInput';
+import { useDebounce } from '@/hooks/useDebounce';
 
 type FormState = {
     city: string;
@@ -27,7 +28,7 @@ const Cars = ({ carsArr }: { carsArr: Car[] }) => {
         yearTo: ""
     });
 
-    const [appliedFilters, setAppliedFilters] = useState(filters);
+    const debouncedFilters = useDebounce(filters, 500);
 
     const filterCars = (cars: Car[], f: typeof filters) => {
         let result = cars;
@@ -43,7 +44,9 @@ const Cars = ({ carsArr }: { carsArr: Car[] }) => {
         return result;
     }
 
-    const previewCars = useMemo(() => filterCars(carsArr, filters), [carsArr, filters]);
+    const previewCars = useMemo(() => filterCars(carsArr, debouncedFilters), [carsArr, debouncedFilters]);
+
+    const [appliedFilters, setAppliedFilters] = useState(filters);
 
     const filteredCars = useMemo(() => filterCars(carsArr, appliedFilters), [carsArr, appliedFilters]);
 
