@@ -6,103 +6,124 @@ import React from 'react';
 import { useState } from 'react';
 import Image from 'next/image';
 import { IoIosClose } from "react-icons/io";
+import FilterInput from '@/components/FilterInput';
+
+export type FormState = {
+    category: string;
+    title: string;
+    model: string;
+    generation: string;
+    carcase: string;
+    drive: string;
+    gearbox: string;
+    engineSize: string;
+    mileage: string;
+    steeringWheel: boolean;
+    customs: boolean;
+    color: string;
+    price: string;
+    city: string;
+    images: File[];
+};
+
+const initialForm: FormState = {
+    category: "cars",
+    title: "",
+    model: "",
+    generation: "",
+    carcase: "",
+    drive: "Передний",
+    gearbox: "",
+    engineSize: "",
+    mileage: "",
+    steeringWheel: false,
+    customs: true,
+    color: "",
+    price: "",
+    city: "",
+    images: [],
+};
+
+const categories = [
+    {
+        label: "Машины",
+        categoryType: "cars"
+    },
+    {
+        label: "Запчасти",
+        categoryType: "zapchasti"
+    },
+    {
+        label: "Спецтехника",
+        categoryType: "spectehnika"
+    }
+];
+
+const drives = [
+    {
+        label: "Передний"
+    },
+    {
+        label: "Задний"
+    },
+    {
+        label: "Полный"
+    }
+];
 
 const NewAdv = () => {
-    const [category, setCategory] = useState("cars");
-    const [title, setTitle] = useState("");
-    const [model, setModel] = useState("");
-    const [generation, setGeneration] = useState("");
-    const fullTitle = `${title} ${model} ${generation}`;
-    const [carcase, setCarcase] = useState("");
-    const [drive, setDrive] = useState("Передний");
-    const [gearbox, setGearbox] = useState("");
-    const [engineSize, setEngineSize] = useState("");
-    const [mileage, setMileage] = useState("");
-    const [steeringWheel, setSteeringWheel] = useState(false);
-    const [customs, setCustoms] = useState(true);
-    const [color, setColor] = useState("");
-    const [price, setPrice] = useState("");
-    const [city, setCity] = useState("");
-    const [images, setImages] = useState<File[]>([]);
+    const [form, setForm] = useState<FormState>(initialForm);
 
-    const categories = [
-        {
-            label: "Машины",
-            categoryType: "cars"
-        },
-        {
-            label: "Запчасти",
-            categoryType: "zapchasti"
-        },
-        {
-            label: "Спецтехника",
-            categoryType: "spectehnika"
-        }
-    ];
+    const handleChange = <K extends keyof FormState>(key: K, value: FormState[K]) => {
+        setForm((prev) => ({
+            ...prev,
+            [key]: value,
+        }));
+    };
 
-    const drives = [
-        {
-            label: "Передний"
-        },
-        {
-            label: "Задний"
-        },
-        {
-            label: "Полный"
-        }
-    ];
+    const fullTitle = `${form.title} ${form.model} ${form.generation}`;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
         let uploadedUrls: string[] = [];
 
-        if (images && images.length > 0) {
-            uploadedUrls = await uploadToCloudinary(images);
+        if (form.images && form.images.length > 0) {
+            uploadedUrls = await uploadToCloudinary(form.images);
         }
 
         const { data: { user } } = await supabase.auth.getUser();
 
-        const { data, error } = await supabase
+        const { error } = await supabase
             .from("cars")
             .insert([
                 {
                     profile_id: user?.id,
                     title: fullTitle,
-                    category,
-                    generation,
-                    carcase,
-                    drive,
-                    gearbox,
-                    engine_size: engineSize,
-                    mileage,
-                    steering_wheel: steeringWheel,
-                    color,
-                    price,
-                    city,
-                    customs,
+                    category: form.category,
+                    generation: form.generation,
+                    carcase: form.carcase,
+                    drive: form.drive,
+                    gearbox: form.gearbox,
+                    engine_size: form.engineSize,
+                    mileage: form.mileage,
+                    steering_wheel: form.steeringWheel,
+                    color: form.color,
+                    price: form.price,
+                    city: form.city,
+                    customs: form.customs,
                     images: uploadedUrls,
                 }
             ]);
 
         if (error) console.error(error);
         else {
-            setTitle("");
-            setModel("");
-            setGeneration("")
-            setGearbox("");
-            setCarcase("");
-            setEngineSize("");
-            setMileage("");
-            setColor("");
-            setPrice("");
-            setCity("");
-            setImages([]);
+            setForm(initialForm);
         }
     };
 
     const handleRemoveImage = (index: number) => {
-        setImages(prev => prev?.filter((_, i) => i !== index));
+        handleChange("images", form.images.filter((_, i) => i !== index));
     }
 
     return (
@@ -121,8 +142,8 @@ const NewAdv = () => {
                                 <button
                                     type='button'
                                     key={i}
-                                    onClick={() => setCategory(categoryType)}
-                                    className={`cursor-pointer hover:underline ${category === categoryType
+                                    onClick={() => handleChange("category", categoryType)}
+                                    className={`cursor-pointer hover:underline ${form.category === categoryType
                                         ? 'text-green-500 hover:text-green-600'
                                         : 'hover:text-primary-hover'}
                             `}
@@ -139,8 +160,8 @@ const NewAdv = () => {
                                 <button
                                     type='button'
                                     key={i}
-                                    onClick={() => setDrive(label)}
-                                    className={`cursor-pointer hover:underline ${label === drive
+                                    onClick={() => handleChange("drive", label)}
+                                    className={`cursor-pointer hover:underline ${label === form.drive
                                         ? 'text-green-500 hover:text-green-600'
                                         : 'hover:text-primary-hover'}
                             `}
@@ -153,143 +174,102 @@ const NewAdv = () => {
                 </div>
                 <hr />
                 <div className='grid grid-cols-3 gap-5'>
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Введите марку
-                        <input
-                            value={title}
-                            onChange={e => setTitle(e.target.value)}
-                            type="text"
-                            placeholder='Toyota'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
 
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Введите модель
-                        <input
-                            value={model}
-                            onChange={e => setModel(e.target.value)}
-                            type="text"
-                            placeholder='Camry'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
+                    <FilterInput
+                        type='text'
+                        placeholder='Toyota'
+                        value={form.title}
+                        onChange={e => handleChange("title", e.target.value)}
+                        label="Выберите марку"
+                    />
 
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Введите год
-                        <input
-                            value={generation}
-                            onChange={e => setGeneration(e.target.value)}
-                            type="text"
-                            placeholder='2025'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
+                    <FilterInput
+                        type='text'
+                        placeholder='Camry'
+                        value={form.model}
+                        onChange={e => handleChange("model", e.target.value)}
+                        label="Выберите модель"
+                    />
 
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Введите тип кузова
-                        <input
-                            value={carcase}
-                            onChange={e => setCarcase(e.target.value)}
-                            type="text"
-                            placeholder='Седан'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
+                    <FilterInput
+                        type='text'
+                        placeholder='2025'
+                        value={form.generation}
+                        onChange={e => handleChange("generation", e.target.value)}
+                        label="Выберите год"
+                    />
 
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Введите тип КПП
-                        <input
-                            value={gearbox}
-                            onChange={e => setGearbox(e.target.value)}
-                            type="text"
-                            placeholder='Автомат'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
+                    <FilterInput
+                        type='text'
+                        placeholder='Седан'
+                        value={form.carcase}
+                        onChange={e => handleChange("carcase", e.target.value)}
+                        label="Выберите тип кузова"
+                    />
 
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Введите объем двигателя (л.)
-                        <input
-                            value={engineSize}
-                            onChange={e => setEngineSize(e.target.value)}
-                            type="text"
-                            placeholder='2'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
+                    <FilterInput
+                        type='text'
+                        placeholder='Автомат'
+                        value={form.gearbox}
+                        onChange={e => handleChange("gearbox", e.target.value)}
+                        label="Выберите тип КПП"
+                    />
 
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Введите пробег (км)
-                        <input
-                            value={mileage}
-                            onChange={e => setMileage(e.target.value)}
-                            type="text"
-                            placeholder='10000'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
+                    <FilterInput
+                        type='text'
+                        placeholder='2'
+                        value={form.engineSize}
+                        onChange={e => handleChange("engineSize", e.target.value)}
+                        label="Введите объем двигателя (л.)"
+                    />
 
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Цвет кузова
-                        <input
-                            value={color}
-                            onChange={e => setColor(e.target.value)}
-                            type="text"
-                            placeholder='Белый'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
+                    <FilterInput
+                        type='text'
+                        placeholder='10000'
+                        value={form.mileage}
+                        onChange={e => handleChange("mileage", e.target.value)}
+                        label="Введите пробег (км)"
+                    />
 
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Цена
-                        <input
-                            value={price}
-                            onChange={e => setPrice(e.target.value)}
-                            type="number"
-                            placeholder='3500000 тг'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
+                    <FilterInput
+                        type='text'
+                        placeholder='Белый'
+                        value={form.color}
+                        onChange={e => handleChange("color", e.target.value)}
+                        label="Цвет кузова"
+                    />
 
-                    <label className='flex flex-col text-[#888b94] mb-1'>
-                        Город
-                        <input
-                            value={city}
-                            onChange={e => setCity(e.target.value)}
-                            type="text"
-                            placeholder='Астана'
-                            className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
-                            required
-                        />
-                    </label>
+                    <FilterInput
+                        type='number'
+                        placeholder='3500000'
+                        value={form.price}
+                        onChange={e => handleChange("price", e.target.value)}
+                        label="Цена"
+                    />
 
-                    <label className='flex items-center gap-3 text-[#888b94] mb-1'>
-                        Правый руль
-                        <input
-                            checked={steeringWheel}
-                            onChange={() => setSteeringWheel(prev => !prev)}
-                            type="checkbox"
-                        />
-                    </label>
+                    <FilterInput
+                        type='text'
+                        placeholder='Астана'
+                        value={form.city}
+                        onChange={e => handleChange("city", e.target.value)}
+                        label="Город"
+                    />
 
-                    <label className='flex items-center gap-3 text-[#888b94] mb-1'>
-                        Растаможен в Казахстане
-                        <input
-                            checked={customs}
-                            onChange={() => setCustoms(prev => !prev)}
-                            type="checkbox"
-                        />
-                    </label>
+                    <FilterInput
+                        type='checkbox'
+                        checked={form.steeringWheel}
+                        onChange={e => handleChange("title", e.target.value)}
+                        label="Правый руль"
+                        required={false}
+                    />
+
+                    <FilterInput
+                        type='checkbox'
+                        checked={form.customs}
+                        onChange={e => handleChange("customs", e.target.checked)}
+                        label="Растаможен в Казахстане"
+                    />
+
                 </div>
                 <span className='text-xl font-medium'>Загрузите изображения</span>
                 <input
@@ -298,11 +278,11 @@ const NewAdv = () => {
                     onChange={e => {
                         const files = e.target.files;
                         if (!files) return;
-                        setImages(prev => [...prev, ...Array.from(files)]);
+                        handleChange("images", [...form.images, ...Array.from(files)]);
                     }}
                 />
                 <div className='flex gap-2 mt-2'>
-                    {images?.map((file, i) => (
+                    {form.images?.map((file, i) => (
                         <div key={i} className='relative group'>
                             <Image
                                 src={URL.createObjectURL(file)}

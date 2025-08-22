@@ -95,7 +95,7 @@ const CarCard = ({ car }: { car: Car }) => {
                 <div className='flex flex-col text-[13px]'>
                     <span>{car.mileage}</span>
                     <span>
-                        {car.engine_size}, {car.gearbox}
+                        {car.engine_size} л., {car.gearbox}
                     </span>
                     <span className='flex items-center gap-1 mt-12 text-[#777]'>
                         <LuMapPin />
