@@ -4,9 +4,20 @@ import React, { useState, useMemo } from 'react';
 import { Car } from '@/app/(main)/[category]/page';
 import NotFound from '../components/NotFound';
 import CarCard from '../components/Car';
+import FilterInput from '@/components/FilterInput';
+
+type FormState = {
+    city: string;
+    brand: string;
+    withPhotos: boolean;
+    priceFrom: string;
+    priceTo: string;
+    yearFrom: string;
+    yearTo: string;
+};
 
 const Cars = ({ carsArr }: { carsArr: Car[] }) => {
-    const [filters, setFilters] = useState({
+    const [filters, setFilters] = useState<FormState>({
         city: "",
         brand: "",
         withPhotos: false,
@@ -36,59 +47,58 @@ const Cars = ({ carsArr }: { carsArr: Car[] }) => {
 
     const filteredCars = useMemo(() => filterCars(carsArr, appliedFilters), [carsArr, appliedFilters]);
 
+    const handleChange = <K extends keyof FormState>(key: K, value: FormState[K] | boolean) => {
+        setFilters((prev) => ({
+            ...prev,
+            [key]: value,
+        }));
+    };
+
     return (
         <>
             <div className='flex flex-col'>
                 <div className='bg-[#fbf1d7] p-4 flex flex-col gap-3'>
-                    <input
-                        type="text"
-                        placeholder='Город'
+                    <FilterInput
+                        type='text'
                         value={filters.city}
-                        onChange={e => setFilters({ ...filters, city: e.target.value })}
-                        className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                        onChange={e => handleChange("city", e.target.value)}
+                        placeholder='Город'
                     />
-                    <input
-                        type="text"
-                        placeholder='Название'
+                    <FilterInput
+                        type='text'
                         value={filters.brand}
-                        onChange={e => setFilters({ ...filters, brand: e.target.value })}
-                        className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                        onChange={e => handleChange("brand", e.target.value)}
+                        placeholder="Название"
                     />
-                    <label className='flex items-center gap-3 text-[#888b94] mb-1'>
-                        <input
-                            type="checkbox"
-                            checked={filters.withPhotos}
-                            onChange={e => setFilters({ ...filters, withPhotos: e.target.checked })}
-                        />
-                        Только с фото
-                    </label>
-                    <input
-                        type="number"
-                        placeholder='Цена от'
+                    <FilterInput
+                        type='checkbox'
+                        checked={filters.withPhotos}
+                        onChange={e => handleChange("withPhotos", e.target.checked)}
+                        label='Только с фото'
+                    />
+                    <FilterInput
+                        type='number'
                         value={filters.priceFrom}
-                        onChange={e => setFilters({ ...filters, priceFrom: e.target.value })}
-                        className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                        onChange={e => handleChange("priceFrom", e.target.value)}
+                        placeholder="Цена от"
                     />
-                    <input
-                        type="number"
-                        placeholder='Цена до'
+                    <FilterInput
+                        type='number'
                         value={filters.priceTo}
-                        onChange={e => setFilters({ ...filters, priceTo: e.target.value })}
-                        className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                        onChange={e => handleChange("priceTo", e.target.value)}
+                        placeholder="Цена до"
                     />
-                    <input
-                        type="number"
-                        placeholder='Год от'
+                    <FilterInput
+                        type='number'
                         value={filters.yearFrom}
-                        onChange={e => setFilters({ ...filters, yearFrom: e.target.value })}
-                        className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                        onChange={e => handleChange("yearFrom", e.target.value)}
+                        placeholder="Год от"
                     />
-                    <input
-                        type="number"
-                        placeholder='Год до'
+                    <FilterInput
+                        type='number'
                         value={filters.yearTo}
-                        onChange={e => setFilters({ ...filters, yearTo: e.target.value })}
-                        className='mt-1 focus:outline-1 outline-primary-accent px-3 py-1 border rounded-sm text-[15px]'
+                        onChange={e => handleChange("yearTo", e.target.value)}
+                        placeholder="Год до"
                     />
                 </div>
 

@@ -40,7 +40,7 @@ const Advertisement = ({ advertisement, onDelete }: { advertisement: Car, onDele
                 className='mt-3 rounded-md w-[160px] h-[120px] object-cover'
             />
             <span className='mt-3'>
-                {advertisement.generation}, {advertisement.engine_size}, {advertisement.gearbox}, {advertisement.drive}, {advertisement.mileage}, {advertisement.color}
+                {advertisement.generation} год, {advertisement.engine_size} л., {advertisement.gearbox}, {advertisement.drive}, {advertisement.mileage} км., {advertisement.color}
             </span>
             <span className='mt-3 text-[#888b94]'>
                 {advertisement.city}
