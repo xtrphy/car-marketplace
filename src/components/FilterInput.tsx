@@ -40,4 +40,4 @@ const FilterInput = ({ label, type, placeholder, value, checked, onChange, requi
     );
 };
 
-export default FilterInput;
+export default React.memo(FilterInput);
