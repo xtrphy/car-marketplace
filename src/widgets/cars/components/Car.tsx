@@ -1,5 +1,5 @@
 import { Car } from '@/app/(main)/[category]/page';
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { IoCameraOutline } from 'react-icons/io5';
@@ -10,32 +10,25 @@ const CarCard = ({ car }: { car: Car }) => {
     const [activeImage, setActiveImage] = useState(0);
     const [isBars, setIsBars] = useState(false);
 
-    const carImagesLength = car.images.length;
-
-    const slicedImages = car.images.slice(0, 5);
+    const slicedImages = useMemo(() => car.images.slice(0, 5), [car.images]);
     const slicedImagesLength = slicedImages.length;
+    const remainingImages = useMemo(() => car.images.length - slicedImages.length, [car.images, slicedImages.length]);
 
-    const remainingImages = carImagesLength - slicedImagesLength;
+    const formattedPrice = useMemo(() => numeral(car.price).format("0,0 $"), [car.price]);
 
-    const calculateWidth = (imagesLength: number) => {
-        if (imagesLength < 5) {
-            return 200 / imagesLength
-        } else {
-            return 40;
-        }
-    }
+    const calculateWidth = useCallback((imagesLength: number) => {
+        return imagesLength < 5 ? 200 / imagesLength : 40;
+    }, []);
 
-    function onHover(index: number) {
+    const onHover = useCallback((index: number) => {
         setActiveImage(index)
         setIsBars(true);
-    }
+    }, []);
 
-    function onLeave() {
+    const onLeave = useCallback(() => {
         setActiveImage(0);
         setIsBars(false);
-    }
-
-    const formattedPrice = numeral(car.price).format("0,0 $");
+    }, []);
 
     return (
         <Link
@@ -66,7 +59,7 @@ const CarCard = ({ car }: { car: Car }) => {
                     </div>
                 ))}
 
-                {carImagesLength > slicedImagesLength && activeImage === slicedImagesLength - 1 &&
+                {car.images.length > slicedImagesLength && activeImage === slicedImagesLength - 1 &&
                     <span className='absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-sm pointer-events-none'>
                         <IoCameraOutline size={30} />
                         ещё {remainingImages} фото
@@ -108,4 +101,4 @@ const CarCard = ({ car }: { car: Car }) => {
     );
 };
 
-export default CarCard;
+export default React.memo(CarCard);

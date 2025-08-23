@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { uploadToCloudinary } from '@/utils/cloudinary';
 import { supabase } from '@/utils/supabase/supabaseClient';
 import Image from 'next/image';
 import { IoIosClose } from "react-icons/io";
 import FilterInput from '@/components/FilterInput';
+import { categories, drives } from '@/utils/vars';
 
 export type FormState = {
     category: string;
@@ -43,44 +44,20 @@ const initialForm: FormState = {
     images: [],
 };
 
-const categories = [
-    {
-        label: "Машины",
-        categoryType: "cars"
-    },
-    {
-        label: "Запчасти",
-        categoryType: "zapchasti"
-    },
-    {
-        label: "Спецтехника",
-        categoryType: "spectehnika"
-    }
-];
-
-const drives = [
-    {
-        label: "Передний"
-    },
-    {
-        label: "Задний"
-    },
-    {
-        label: "Полный"
-    }
-];
-
 const NewAdvForm = () => {
     const [form, setForm] = useState<FormState>(initialForm);
 
-    const handleChange = <K extends keyof FormState>(key: K, value: FormState[K]) => {
-        setForm((prev) => ({
-            ...prev,
-            [key]: value,
-        }));
-    };
+    const handleChange = useCallback(<K extends keyof FormState>(
+        key: K,
+        value: FormState[K]
+    ) => {
+        setForm(prev => ({ ...prev, [key]: value }));
+    }, []);
 
-    const fullTitle = `${form.title} ${form.model} ${form.generation}`;
+    const fullTitle = useMemo(
+        () => `${form.title} ${form.model} ${form.generation}`,
+        [form.title, form.model, form.generation]
+    );
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -121,9 +98,12 @@ const NewAdvForm = () => {
         }
     };
 
-    const handleRemoveImage = (index: number) => {
-        handleChange("images", form.images.filter((_, i) => i !== index));
-    }
+    const handleRemoveImage = useCallback((index: number) => {
+        setForm(prev => ({
+            ...prev,
+            images: prev.images.filter((_, i) => i !== index),
+        }));
+    }, []);
 
     return (
         <form
@@ -254,7 +234,7 @@ const NewAdvForm = () => {
                 <FilterInput
                     type='checkbox'
                     checked={form.steeringWheel}
-                    onChange={e => handleChange("title", e.target.value)}
+                    onChange={e => handleChange("steeringWheel", e.target.checked)}
                     label="Правый руль"
                     required={false}
                 />

@@ -2,14 +2,17 @@ import { Car } from '@/app/(main)/[category]/page';
 import { supabase } from '@/utils/supabase/supabaseClient';
 import Link from 'next/link';
 import Image from 'next/image';
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import numeral from "@/utils/numeral/register"
 import { IoTrashOutline } from 'react-icons/io5';
 
 const Advertisement = ({ advertisement, onDelete }: { advertisement: Car, onDelete: (id: string) => void }) => {
-    const formattedPrice = numeral(advertisement.price).format("0,0 $");
+    const formattedPrice = useMemo(
+        () => numeral(advertisement.price).format("0,0 $"),
+        [advertisement.price]
+    );
 
-    const deleteAdv = async (id: string) => {
+    const deleteAdv = useCallback(async (id: string) => {
         const { error } = await supabase
             .from("cars")
             .delete()
@@ -19,8 +22,8 @@ const Advertisement = ({ advertisement, onDelete }: { advertisement: Car, onDele
             console.error(error)
         } else {
             onDelete(id);
-        };
-    };
+        }
+    }, [onDelete]);
 
     return (
         <div className='shadow-[0_2px_4px_0_rgba(28,24,25,0.1)] text-sm rounded-md py-3 px-4 flex flex-col w-[350px] border'>
@@ -57,4 +60,4 @@ const Advertisement = ({ advertisement, onDelete }: { advertisement: Car, onDele
     );
 };
 
-export default Advertisement;
+export default React.memo(Advertisement);
